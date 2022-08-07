@@ -1,0 +1,21 @@
+//KEVINSIMORANGKIR
+//TUGAS_ALPRO_02
+//121140150
+
+#include <iostream>
+using namespace std;
+
+int deret(int a) {
+	int i=1;
+	if(a>=i){
+		return a+deret(a-1);
+	}
+}
+
+int main(){
+  int a;
+  cout<<"Input Angka: ";	
+  cin>>a;
+  cout<<endl<<"Hasil deret bilangan 1-"<<a<<" = "<<deret(a);
+
+}
