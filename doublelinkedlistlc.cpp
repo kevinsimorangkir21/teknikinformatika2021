@@ -1,3 +1,9 @@
+/*
+Nama : Kevin Simorangkir
+NIM  : 121140150
+Kelas : RC
+*/
+
 #include <iostream>
 using namespace std;
 
