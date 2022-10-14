@@ -1,0 +1,259 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+typedef string setreing;
+typedef int intejer;
+typedef struct Twarehouse* address;
+typedef struct Twarehouse {
+	setreing company, brand;
+	intejer year, cc;
+	address next;
+} warehouse;
+
+address newnode, fristnode, lastnode, cur, del, search, repo;
+
+
+//buat single list
+void createsingle(setreing company, setreing brand, intejer year, intejer cc) {
+	fristnode = new warehouse();
+	fristnode->company = company;
+	fristnode->brand = brand;
+	fristnode->year = year;
+	fristnode->cc = cc;
+	fristnode->next = NULL;
+	lastnode = fristnode;
+}
+
+//tambah awal
+void addfrist(setreing company, setreing brand, intejer year, intejer cc) {
+	newnode = new warehouse();
+	newnode->company = company;
+	newnode->brand = brand;
+	newnode->year = year;
+	newnode->cc = cc;
+	newnode->next = fristnode;
+	fristnode = newnode;
+}
+
+//tambah tengah
+void addmid(setreing company, setreing brand, intejer year, intejer cc, intejer posisi) {
+	newnode = new warehouse();
+	newnode->company = company;
+	newnode->brand = brand;
+	newnode->year = year;
+	newnode->cc = cc;
+	//transfer
+	cur = fristnode;
+	intejer nomor = 1;
+	while (nomor < posisi - 1) {
+		cur = cur->next;
+		nomor++;
+	}
+	newnode->next = cur->next;
+	cur->next = newnode;
+}
+
+//tambah akhir
+void addlast(setreing company, setreing brand, intejer year, intejer cc) {
+	newnode = new warehouse();
+	newnode->company = company;
+	newnode->brand = brand;
+	newnode->year = year;
+	newnode->cc = cc;
+	newnode->next = NULL;
+	lastnode->next = newnode;
+	lastnode = newnode;
+}
+
+//hapus awal
+void deletefrist() {
+	del = fristnode;
+	fristnode = fristnode->next;
+	delete del;
+}
+
+//hapusakhir
+void deletelast() {
+	del = lastnode;
+	cur = fristnode;
+	while (cur->next != lastnode) {
+		cur = cur->next;
+	}
+	cur->next = NULL;
+	lastnode = cur;
+	delete del;
+}
+
+//hapusaneh
+void hapusaneh(intejer* a, intejer* b) {
+	intejer x = 0; intejer y = 0;
+	cur = fristnode;
+	while (cur->next != NULL) {
+		if (cur->year < 2002 and x == 0) {
+			cout << "Mobil berumur lebih dari 20 tahun ditemukan! \n";
+			cout << "Menghapus bangian awal \n";
+			*a = 1; x += 1;
+		}
+		if (cur->cc % 160 == 0 and y == 0) {
+			cout << "Mobil dengan CC kelipatan 160 ditemukan! \n";
+			cout << "Menghapus bangian akhir \n";
+			*b = 1; y += 1;
+		}
+		cur = cur->next;
+	}
+	cout << endl;
+}
+
+// keluaran
+void printsinglelist() {
+	warehouse* cur;
+	cur = fristnode;
+	if (fristnode == NULL)
+	{
+		cout << "no single link list created!!! \n";
+	}
+	else {
+		while (cur != NULL) {
+			cout << "Nama Pabrik : " << cur->company << endl;
+			cout << "Nama mobil : " << cur->brand << endl;
+			cout << "Tahun Terbit : " << cur->year << endl;
+			cout << "Besar CC : " << cur->cc << endl;
+			cout << endl;
+			cur = cur->next;
+		}
+	}
+
+}
+
+//cari mobil
+void carimobil(setreing* carimobil) {
+	cur = fristnode;
+	intejer a = 0;
+	while (cur->next != NULL)
+	{
+		if (*carimobil == cur->brand) {
+			a = 1;
+			break;
+		}
+		cur = cur->next;
+	}
+	if (a == 1)
+	{
+		cout << "Berikut merupakan data mobil yang dicari \n";
+		cout << "Nama Pabrik : " << cur->company << endl;
+		cout << "Nama mobil : " << cur->brand << endl;
+		cout << "Tahun Terbit : " << cur->year << endl;
+		cout << "Besar CC : " << cur->cc << endl;
+		cout << endl;
+	}
+	else
+	{
+		cout << "Mobil tidak ditemukan!! \n";
+	}
+
+}
+
+//mengurutkan mobil sesuai tahun produksi
+void sortcar() {
+	addlast("ngantukkkwoyhelp", "turudekk", 2019, 2990);
+	cur = fristnode;
+	cout << "Berikut urutan mobil sesuai tahun produksi \n";
+	while (cur != NULL) {
+		repo = cur->next;
+		while (repo != NULL) {
+			if (cur->year > repo->year) {
+
+				newnode->company = cur->company;
+				newnode->brand = cur->brand;
+				newnode->year = cur->year;
+				newnode->cc = cur->cc;
+			
+				cur->company = repo->company;
+				cur->brand = repo->brand;
+				cur->year = repo->year;
+				cur->cc = repo->cc;
+				
+				repo->company = newnode->company;
+				repo->brand = newnode->brand;
+				repo->year = newnode->year;
+				repo->cc = newnode->cc;
+			}
+			repo = repo->next;
+		}
+		cur = cur->next;
+	}
+	deletelast();
+	printsinglelist();
+}
+
+int nama_menu() {
+	int choice;
+	cout << "Daftar menu bengkel " << endl << endl;
+	cout << "0. create single link list (must do first)" << endl;
+	cout << "1. addfrist" << endl;
+	cout << "2. addmiddle" << endl;
+	cout << "3. addlast" << endl;
+	cout << "4. remove weird" << endl;
+	cout << "5. Search car data" << endl;
+	cout << "6. sort cars by year" << endl;
+	cout << "7. Show All Car List" << endl;
+	cout << "9. Exit..." << endl << endl;
+	cout << "choice : "; cin >> choice;
+	return choice;
+}
+
+int main() {
+	setreing lanjut = "n", brand, mobil, cari;
+	intejer order, year, cc, sisipan, aneh1 = 0, aneh2 = 0, dataawal = 0;
+
+	do {
+		order = nama_menu();
+		if (order == 0 or order == 1 or order == 2 or order == 3) {
+			cout << "Masukan Brand mobil : "; cin.ignore(); getline(cin, brand);
+			cout << "Masukan jenis mobil : "; getline(cin, mobil);
+			cout << "masukan tahun mobil : "; cin >> year;
+			cout << "masukan cc mobil :	"; cin >> cc;
+		}
+		switch (order) {
+		case 0:
+			createsingle(brand, mobil, year, cc);
+				break;
+		case 1:
+			addfrist(brand, mobil, year, cc);
+			break;
+		case 2:
+			cout << "Ingin disisipkan ke nomer berapa? : ";
+			cin >> sisipan;
+			addmid(brand, mobil, year, cc, sisipan);
+			break;
+		case 3:
+			addlast(brand, mobil, year, cc);
+			break;
+		case 4:
+			hapusaneh(&aneh1, &aneh2);
+			if (aneh1 == 1) deletefrist();
+			if (aneh2 == 1) deletelast();
+			break;
+		case 5:
+			cout << "Masukan nama mobil yang ingin dicari : "; cin.ignore(); getline(cin, cari);
+			carimobil(&cari);
+			break;
+		case 6:
+			sortcar();
+			break;
+		case 7:
+			cout << "Berikut list semua mobil yang datang ke bengkel \n\n";
+			printsinglelist();
+			break;
+		default:
+			break;
+		}
+		cout << "return to main menu? (y/n) ";
+		cin >> lanjut;
+		cout << endl << endl;
+	} while (lanjut == "y");
+
+	cout << "\nProgram completed!!!!\n";
+	return 0;
+}
